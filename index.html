@@ -115,25 +115,28 @@ canvas{display:block;width:100%;height:190px;touch-action:none;cursor:crosshair;
     <div data-f="fecha"><label for="fecha">Fecha de firma</label><input id="fecha" type="date"><div class="err">Elegí la fecha.</div></div>
   </div>
 
-  <div data-para="atm">
-    <div class="sub">Datos que además pide ATM</div>
+  <div data-para="atm sancor" id="extra">
+    <div class="sub">Datos adicionales que piden las compañías elegidas</div>
     <div class="grid">
-      <div data-f="nacionalidad"><label for="nacionalidad">Nacionalidad</label><input id="nacionalidad" value="Argentina"><div class="err">Completá la nacionalidad.</div></div>
-      <div data-f="estadoCivil"><label for="estadoCivil">Estado civil</label><select id="estadoCivil"><option value="">Elegí uno</option><option>Soltero/a</option><option>Casado/a</option><option>Divorciado/a</option><option>Viudo/a</option><option>Unión convivencial</option></select><div class="err">Elegí el estado civil.</div></div>
-      <div data-f="fechaNac"><label for="fechaNac">Fecha de nacimiento</label><input id="fechaNac" type="date"><div class="err">Completá la fecha de nacimiento.</div></div>
-      <div data-f="cp"><label for="cp">Código postal</label><input id="cp" autocomplete="postal-code"><div class="err">Completá el código postal.</div></div>
-      <div data-f="celular"><label for="celular">Celular</label><input id="celular" type="tel" autocomplete="tel"><div class="err">Completá el celular.</div></div>
-      <div data-f="telefono"><label for="telefono">Teléfono fijo <small>(opcional)</small></label><input id="telefono" type="tel"></div>
-      <div class="full" data-f="email"><label for="email">Email</label><input id="email" type="email" autocomplete="email"><div class="err">Ingresá un email válido.</div></div>
-      <div data-f="iva"><label for="iva">Condición frente al IVA</label><select id="iva"><option value="">Elegí una</option><option value="RI">Responsable inscripto</option><option value="MT">Monotributo</option><option value="EX">Exento</option></select><div class="err">Elegí la condición.</div></div>
-      <div data-f="ganancias"><label for="ganancias">Retención de Ganancias</label><select id="ganancias"><option value="">Elegí una</option><option>Honorarios</option><option>Servicios</option><option>Monotributo</option></select><div class="err">Elegí una opción.</div></div>
-      <div data-f="excGanancias"><label for="excGanancias">¿Exceptuado de retención de Ganancias?</label><select id="excGanancias"><option>No</option><option>Si</option></select></div>
-      <div data-f="iibb"><label for="iibb">N.º de Ingresos Brutos <small>(opcional)</small></label><input id="iibb"></div>
-      <div data-f="iibbTipo"><label for="iibbTipo">Tipo de Ingresos Brutos</label><select id="iibbTipo"><option value="">Elegí uno</option><option>Local</option><option>Convenio Multilateral</option><option>Exento</option></select><div class="err">Elegí el tipo.</div></div>
-      <div data-f="excIibb"><label for="excIibb">¿Exceptuado de retención de IIBB?</label><select id="excIibb"><option>No</option><option>Si</option></select></div>
-      <div class="full" data-f="cbu"><label for="cbu">CBU para el pago de comisiones</label><input id="cbu" inputmode="numeric"><div class="err">El CBU tiene 22 números.</div></div>
-      <div data-f="osseg"><label for="osseg">N.º de afiliado OSSEG <small>(opcional)</small></label><input id="osseg"></div>
-      <div data-f="referencias"><label for="referencias">Referencias comerciales <small>(opcional)</small></label><input id="referencias"></div>
+      <div data-f="nacionalidad" data-para="atm"><label for="nacionalidad">Nacionalidad</label><input id="nacionalidad" value="Argentina"><div class="err">Completá la nacionalidad.</div></div>
+      <div data-f="estadoCivil" data-para="atm sancor"><label for="estadoCivil">Estado civil</label><select id="estadoCivil"><option value="">Elegí uno</option><option>Soltero/a</option><option>Casado/a</option><option>Divorciado/a</option><option>Viudo/a</option><option>Unión convivencial</option></select><div class="err">Elegí el estado civil.</div></div>
+      <div data-f="fechaNac" data-para="atm sancor"><label for="fechaNac">Fecha de nacimiento</label><input id="fechaNac" type="date"><div class="err">Completá la fecha de nacimiento.</div></div>
+      <div data-f="cp" data-para="atm sancor"><label for="cp">Código postal</label><input id="cp" autocomplete="postal-code"><div class="err">Completá el código postal.</div></div>
+      <div data-f="celular" data-para="atm sancor"><label for="celular">Celular</label><input id="celular" type="tel" autocomplete="tel"><div class="err">Completá el celular.</div></div>
+      <div data-f="telefono" data-para="atm sancor"><label for="telefono">Teléfono fijo <small>(opcional)</small></label><input id="telefono" type="tel"></div>
+      <div class="full" data-f="email" data-para="atm sancor"><label for="email">Email</label><input id="email" type="email" autocomplete="email"><div class="err">Ingresá un email válido.</div></div>
+      <div data-f="iva" data-para="atm sancor"><label for="iva">Condición frente al IVA</label><select id="iva"><option value="">Elegí una</option><option value="RI">Responsable inscripto</option><option value="MT">Monotributo</option><option value="EX">Exento</option></select><div class="err">Elegí la condición.</div></div>
+      <div data-f="ganancias" data-para="sancor"><label for="ganancias">Impuesto a las Ganancias</label><select id="ganancias"><option value="">Elegí una</option><option>Inscripto</option><option>Exento</option><option>No inscripto</option></select><div class="err">Elegí una opción.</div></div>
+      <div data-f="gananciasRet" data-para="atm"><label for="gananciasRet">Retención de Ganancias (ATM)</label><select id="gananciasRet"><option value="">Elegí una</option><option>Honorarios</option><option>Servicios</option><option>Monotributo</option></select><div class="err">Elegí una opción.</div></div>
+      <div data-f="excGanancias" data-para="atm"><label for="excGanancias">¿Exceptuado de retención de Ganancias?</label><select id="excGanancias"><option>No</option><option>Si</option></select></div>
+      <div data-f="iibbTipo" data-para="atm sancor"><label for="iibbTipo">Ingresos Brutos</label><select id="iibbTipo"><option value="">Elegí uno</option><option>Local</option><option>Convenio Multilateral</option><option>Exento</option><option>No inscripto</option></select><div class="err">Elegí una opción.</div></div>
+      <div data-f="iibb" data-para="atm sancor"><label for="iibb">N.º de Ingresos Brutos <small>(si tenés)</small></label><input id="iibb"></div>
+      <div data-f="iibbJur" data-para="sancor"><label for="iibbJur">Jurisdicción sede <small>(solo Convenio Multilateral)</small></label><input id="iibbJur"></div>
+      <div data-f="excIibb" data-para="atm"><label for="excIibb">¿Exceptuado de retención de IIBB?</label><select id="excIibb"><option>No</option><option>Si</option></select></div>
+      <div class="full" data-f="cbu" data-para="atm"><label for="cbu">CBU para el pago de comisiones</label><input id="cbu" inputmode="numeric"><div class="err">El CBU tiene 22 números.</div></div>
+      <div data-f="osseg" data-para="atm"><label for="osseg">N.º de afiliado OSSEG <small>(opcional)</small></label><input id="osseg"></div>
+      <div data-f="referencias" data-para="atm"><label for="referencias">Referencias comerciales <small>(opcional)</small></label><input id="referencias"></div>
+      <div data-f="zonaSancor" data-para="sancor"><label for="zonaSancor">Zona comercial Sancor</label><select id="zonaSancor"><option>CÓRDOBA</option><option>BAHÍA BLANCA</option><option>CAPITAL FEDERAL</option><option>CASA CENTRAL</option><option>CONCORDIA</option><option>GENERAL ROCA</option><option>MAR DEL PLATA</option><option>MENDOZA</option><option>POSADAS</option><option>RESISTENCIA</option><option>RÍO CUARTO</option><option>ROSARIO</option><option>SANTA FE</option><option>SANTA ROSA</option><option>TUCUMÁN</option></select></div>
     </div>
   </div>
 </section>
@@ -241,12 +244,46 @@ window.BLOQUES_SANCOR = [
  {p:30,limpiar:[559,96,610,110],al:'l',x0:560,x1:610,base:106,size:9,t:'{zona}'},
 ];
 </script>
+<script>// Sancor: 3 páginas de Declaración Jurada + las 30 del paquete original (se corren 3 páginas)
+(function(){
+ const D=3, mover=a=>a.map(x=>Array.isArray(x)?[x[0]+D].concat(x.slice(1)):Object.assign({},x,{p:x.p+D}));
+ const X=()=> 'X';
+ window.SANCOR = {
+  campos: mover(window.CAMPOS), firmas: mover(window.FIRMAS).concat([[3,300,198,62,34]]), bloques: mover(window.BLOQUES_SANCOR),
+  cajas: [
+   [1,192,622,337,638,'matricula'], [1,164,599,297,617,'zonaSancor'],
+   [1,262,508,561,528,'nombre'], [1,196,485,330,506,'fechaNacTxt'], [1,401,485,560,504,'estadoCivil'],
+   [1,156,465,330,484,d=>'DNI '+d.dni], [1,374,462,561,481,'cuit'],
+   // dirección comercial y particular (se usa el mismo domicilio)
+   [1,142,396,295,415,'calleSola'], [1,349,395,378,411,'numero'], [1,410,393,432,412,'piso'], [1,465,393,564,412,'depto'],
+   [1,143,377,296,395,'ciudad'], [1,354,373,563,390,'provincia'],
+   [1,143,354,296,371,'cp'], [1,355,349,403,367,'telefono'], [1,450,348,563,368,'celular'], [1,144,331,297,348,'email'],
+   [1,144,259,293,277,'calleSola'], [1,343,259,383,276,'numero'], [1,408,260,433,277,'piso'], [1,462,257,564,276,'depto'],
+   [1,145,238,293,256,'ciudad'], [1,352,238,564,256,'provincia'],
+   [1,145,215,291,232,'cp'], [1,348,216,405,233,'telefono'], [1,449,215,566,233,'celular'], [1,86,177,565,195,'email'],
+   [1,137,127,292,145,'cuit'],
+   // ingresos brutos
+   [2,182,558,329,577,d=>d.iibbTipo==='Local'?d.provincia:''], [2,345,557,558,577,d=>d.iibbTipo==='Local'?d.iibb:''],
+   [2,182,538,328,555,d=>d.iibbTipo==='Convenio Multilateral'?d.iibb:''], [2,411,535,557,554,d=>d.iibbTipo==='Convenio Multilateral'?d.iibbJur:''],
+   [3,154,586,517,605,'nombre'], [3,405,607,517,624,'fechaCorta']
+  ],
+  marcas: [
+   [1,390,618,414,632,X], [1,207,102,226,119,d=>d.iva==='MT'],
+   [2,127,761,149,780,d=>d.iva==='RI'], [2,128,737,148,758,d=>d.iva==='EX'],
+   [2,129,649,149,667,d=>d.ganancias==='Inscripto'], [2,129,624,148,645,d=>d.ganancias==='Exento'],
+   [2,141,515,171,536,d=>d.iibbTipo==='No inscripto'], [2,140,490,171,509,d=>d.iibbTipo==='Exento'],
+   // documentación que se anexa: las cartas oferta y el convenio van en este mismo PDF
+   [2,89,357,118,375,X],[2,89,334,118,354,X],[2,89,312,118,328,X],[2,89,290,117,308,X],[2,89,267,118,285,X]
+  ]
+ };
+})();
+</script>
 <script>// Catálogo de compañías. Cada una: documento base + cómo se completa.
 window.COMPANIAS = [
  { id:'sancor', nombre:'Sancor Seguros y Prevención',
-   detalle:'Sancor, convenio de cobranza, Prevención ART, Salud y Retiro · 30 páginas',
-   archivo:'Apertura Sancor-Prevencion',
-   campos: window.CAMPOS, firmas: window.FIRMAS, bloques: window.BLOQUES_SANCOR, fuente:'times', extras:[] },
+   detalle:'Declaración jurada, Sancor, convenio de cobranza, Prevención ART, Salud y Retiro · 33 páginas',
+   archivo:'Apertura Sancor-Prevencion', fuente:'times',
+   campos: SANCOR.campos, firmas: SANCOR.firmas, bloques: SANCOR.bloques, cajas: SANCOR.cajas, marcas: SANCOR.marcas },
  { id:'atm', nombre:'ATM Seguros',
    detalle:'Solicitud de alta de productor · 2 páginas',
    archivo:'Alta productor ATM',
@@ -259,7 +296,7 @@ window.COMPANIAS = [
      'Localidad':'ciudad','Código Postal':'cp','Provincia':'provincia',
      'Teléfono':'telefono','Celular':'celular','Dirección Email':'email',
      'Número CUIT':d=>d.cuit.slice(0,2),'undefined':d=>d.cuit.slice(3,11),'undefined_2':d=>d.cuit.slice(12),
-     'CondRetGanancias Honorarios  Serv   Mon':'ganancias','Ingresos Brutos':'iibb','Tipo Multlocalexento':'iibbTipo',
+     'CondRetGanancias Honorarios  Serv   Mon':'gananciasRet','Ingresos Brutos':'iibb','Tipo Multlocalexento':'iibbTipo',
      'Matrícula SSN  N':'matricula','fill_30':'osseg','CBU':'cbu','Referencias Comerciales':'referencias'
    },
    // casillas a marcar con X: [pagina, x0, y0, x1, y1 (coordenadas PDF), condición]
@@ -338,6 +375,12 @@ window.completarPDF = async function(baseBytes, comp, datos, firmaPngBytes){
     if(!comp.formulario) pg.drawRectangle({x:xx-1.5, y:y-2.6, width:tw+3, height:size*0.95+2.6, color:blanco});
     pg.drawText(txt,{x:xx,y,size,font,color:tinta});
   }
+  // cajas: texto dentro de un recuadro [pagina, x0, y0, x1, y1 (coordenadas PDF), clave o función]
+  for (const [p,x0,y0,x1,y1,fuente] of (comp.cajas||[])){
+    const txt=String((typeof fuente==='function'?fuente(datos):datos[fuente])||'').trim(); if(!txt) continue;
+    let s=10; while(s>5.5 && fN.widthOfTextAtSize(txt,s)>x1-x0-4) s-=0.25;
+    pages[p-1].drawText(txt,{x:x0+2,y:y0+(y1-y0-s*0.68)/2,size:s,font:comp.fuente==='times'?fN:font,color:rgb(0,0,0)});
+  }
   for (const [p,x0,y0,x1,y1,fn] of (comp.marcas||[])){
     if(!fn(datos)) continue; const s=10, tw=font.widthOfTextAtSize('X',s);
     pages[p-1].drawText('X',{x:(x0+x1-tw)/2,y:(y0+y1)/2-s*0.35,size:s,font,color:rgb(0,0,0)});
@@ -374,12 +417,12 @@ const preElegida=new URLSearchParams(location.search).get('cia');
 if(preElegida)preElegida.split(',').forEach(id=>{const i=cont.querySelector('input[value="'+id+'"]');if(i)i.checked=true});
 const elegidas=()=>[...cont.querySelectorAll('input:checked')].map(i=>COMPANIAS.find(c=>c.id===i.value));
 function mostrarSecciones(){const ids=elegidas().map(c=>c.id);
-  document.querySelectorAll('[data-para]').forEach(e=>e.hidden=!ids.includes(e.dataset.para));
+  document.querySelectorAll('[data-para]').forEach(e=>e.hidden=!e.dataset.para.split(' ').some(p=>ids.includes(p)));
   $('errcomps').style.display='none'}
 cont.addEventListener('change',mostrarSecciones);mostrarSecciones();
 
 // Borrador en el propio navegador
-const CLAVES=['nombre','cuit','dni','matricula','calle','numero','piso','depto','ciudad','provincia','zona','nacionalidad','estadoCivil','fechaNac','cp','celular','telefono','email','iva','ganancias','excGanancias','iibb','iibbTipo','excIibb','cbu','osseg','referencias'];
+const CLAVES=['nombre','cuit','dni','matricula','calle','numero','piso','depto','ciudad','provincia','zona','nacionalidad','estadoCivil','fechaNac','cp','celular','telefono','email','iva','ganancias','gananciasRet','excGanancias','iibb','iibbTipo','excIibb','iibbJur','zonaSancor','cbu','osseg','referencias'];
 try{const g=JSON.parse(localStorage.getItem('pas-apertura2')||'{}');CLAVES.forEach(k=>{if(g[k])$(k).value=g[k]})}catch(e){}
 function guardarBorrador(){try{const o={};CLAVES.forEach(k=>o[k]=$(k).value);localStorage.setItem('pas-apertura2',JSON.stringify(o))}catch(e){}}
 CLAVES.forEach(k=>{const el=$(k);['input','change'].forEach(ev=>el.addEventListener(ev,()=>{guardarBorrador();const f=el.closest('[data-f]');if(f)f.classList.remove('inv')}))});
@@ -442,11 +485,10 @@ function validar(){
   marcar('cuit',dig($('cuit').value).length!==11);
   const dn=dig($('dni').value);marcar('dni',dn.length<7||dn.length>8);
   ['matricula','calle','numero','ciudad','provincia','fecha'].forEach(k=>marcar(k,!$(k).value.trim()));
-  if(comps.some(c=>c.id==='atm')){
-    ['nacionalidad','estadoCivil','fechaNac','cp','celular','iva','ganancias','iibbTipo'].forEach(k=>marcar(k,!$(k).value.trim()));
-    marcar('email',!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test($('email').value.trim()));
-    marcar('cbu',dig($('cbu').value).length!==22);
-  }
+  const visible=k=>!$(k).closest('[data-f]').closest('[hidden]');
+  ['nacionalidad','estadoCivil','fechaNac','cp','celular','iva','ganancias','gananciasRet','iibbTipo'].forEach(k=>{if(visible(k))marcar(k,!$(k).value.trim())});
+  if(visible('email'))marcar('email',!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test($('email').value.trim()));
+  if(visible('cbu'))marcar('cbu',dig($('cbu').value).length!==22);
   const sinFirma=modo==='escribir'?$('textoFirma').value.trim().length<3:!trazos.length;$('errfirma').style.display=sinFirma?'block':'none';if(sinFirma)ok=false;
   const noAcepta=!$('acepto').checked;$('erracepto').style.display=noAcepta?'block':'none';if(noAcepta)ok=false;
   if(!ok){const f=document.querySelector('[data-f].inv input,[data-f].inv select');const dest=!comps.length?cont:(f||$('errfirma').parentNode);
@@ -478,7 +520,7 @@ $('generar').onclick=async()=>{
       lugarFecha:ciudad+', '+d+'/'+m+'/'+a,cargo:'Productor Asesor de Seguros',
       nacionalidad:mayus($('nacionalidad').value),estadoCivil:$('estadoCivil').value,fechaNacTxt:fn,cp:$('cp').value.trim(),
       telefono:$('telefono').value.trim(),celular:$('celular').value.trim(),email:$('email').value.trim(),iva:$('iva').value,
-      ganancias:$('ganancias').value,excGanancias:$('excGanancias').value,iibb:$('iibb').value.trim(),iibbTipo:$('iibbTipo').value,
+      ganancias:$('ganancias').value,gananciasRet:$('gananciasRet').value,iibbJur:$('iibbJur').value.trim(),zonaSancor:$('zonaSancor').value,fechaCorta:d+'/'+m+'/'+a,excGanancias:$('excGanancias').value,iibb:$('iibb').value.trim(),iibbTipo:$('iibbTipo').value,
       excIibb:$('excIibb').value,cbu:dig($('cbu').value),osseg:$('osseg').value.trim(),referencias:$('referencias').value.trim()};
     const firma=await (modo==='escribir'?firmaEscritaPNG():firmaPNG());
     const limpio=datos.nombre.replace(/[^\p{L}\p{N} ]/gu,'');
