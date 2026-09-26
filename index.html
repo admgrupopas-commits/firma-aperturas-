@@ -155,6 +155,29 @@ canvas{display:block;width:100%;height:190px;touch-action:none;cursor:crosshair;
       <div data-f="fedRC"><label for="fedRC">¿Tenés seguro de Responsabilidad Civil profesional con otra compañía?</label><select id="fedRC"><option>Si</option><option>No</option></select></div>
     </div>
   </div>
+
+  <div data-para="rcfed">
+    <div class="sub">Solicitud de RC profesional (Federación Patronal)</div>
+    <p class="ayuda" style="margin-top:0">Como no tenés seguro de RC con otra compañía, se suma la solicitud de Federación.</p>
+    <div class="grid">
+      <div data-f="rcSexo"><label for="rcSexo">Sexo</label><select id="rcSexo"><option value="">Elegí uno</option><option>Femenino</option><option>Masculino</option></select><div class="err">Elegí una opción.</div></div>
+      <div data-f="rcLugarNac"><label for="rcLugarNac">Lugar de nacimiento</label><input id="rcLugarNac"><div class="err">Completá el lugar de nacimiento.</div></div>
+      <div data-f="rcPep"><label for="rcPep">¿Sos persona expuesta políticamente?</label><select id="rcPep"><option>No</option><option>Si</option></select></div>
+      <div data-f="rcIngresos"><label for="rcIngresos">Monto de tus ingresos anuales</label><input id="rcIngresos" placeholder="$"><div class="err">Completá el monto.</div></div>
+      <div data-f="rcSuma"><label for="rcSuma">Suma asegurada solicitada</label><input id="rcSuma" placeholder="$"><div class="err">Completá la suma asegurada.</div></div>
+      <div data-f="rcRepos"><label for="rcRepos">Reposiciones de suma asegurada</label><select id="rcRepos"><option>Sin reposición</option><option>Una</option></select></div>
+      <div data-f="rcPeriodo"><label for="rcPeriodo">Período extendido de denuncias</label><select id="rcPeriodo"><option>2 años</option><option>5 años</option><option>10 años</option></select></div>
+      <div data-f="rcAapas"><label for="rcAapas">¿Sos socio de AAPAS?</label><select id="rcAapas"><option>No</option><option>Si</option></select></div>
+      <div data-f="rcCertificados"><label for="rcCertificados">Cantidad total de certificados vigentes <small>(opcional)</small></label><input id="rcCertificados" inputmode="numeric"></div>
+      <div data-f="rcSoftware"><label for="rcSoftware">Software de seguros que usás <small>(opcional)</small></label><input id="rcSoftware"></div>
+      <div class="full" data-f="rcBancos"><label for="rcBancos">Bancos con los que operás <small>(uno por renglón)</small></label><textarea id="rcBancos" rows="2" style="width:100%;font:inherit;padding:11px 12px;border:1px solid #c5ccd6;border-radius:7px"></textarea></div>
+      <div class="full" data-f="rcEstructura"><label for="rcEstructura">Estructura de tu organización <small>(opcional)</small></label><textarea id="rcEstructura" rows="2" style="width:100%;font:inherit;padding:11px 12px;border:1px solid #c5ccd6;border-radius:7px"></textarea></div>
+      <div class="full" data-f="rcCursos"><label for="rcCursos">Cursos de capacitación del último año <small>(opcional)</small></label><textarea id="rcCursos" rows="2" style="width:100%;font:inherit;padding:11px 12px;border:1px solid #c5ccd6;border-radius:7px"></textarea></div>
+      <div class="full" data-f="rcSegPrev"><label for="rcSegPrev">Seguros de RC profesional que tuviste antes <small>(compañía, póliza, vigencia)</small></label><textarea id="rcSegPrev" rows="2" style="width:100%;font:inherit;padding:11px 12px;border:1px solid #c5ccd6;border-radius:7px"></textarea></div>
+      <div class="full" data-f="rcReclamos"><label for="rcReclamos">Reclamos por RC en tu ejercicio profesional</label><textarea id="rcReclamos" rows="2" style="width:100%;font:inherit;padding:11px 12px;border:1px solid #c5ccd6;border-radius:7px">No registra</textarea></div>
+      <div class="full" data-f="rcSanciones"><label for="rcSanciones">Sanciones de la SSN</label><textarea id="rcSanciones" rows="2" style="width:100%;font:inherit;padding:11px 12px;border:1px solid #c5ccd6;border-radius:7px">No registra</textarea></div>
+    </div>
+  </div>
 </section>
 <section>
   <h2><span class="n">3</span>Tu firma</h2>
@@ -423,6 +446,51 @@ window.CARUSO = {
   firmas:[[2,70,452,170,40],[3,78,428,120,26],[4,170,262,270,140]]
  };
 })();
+
+(function(){
+ const ln=(k,i)=>d=>(String(d[k]||'').split(/\n/).map(s=>s.trim()).filter(Boolean))[i]||'';
+ const mail=(i)=>d=>(String(d.email||'').split('@'))[i]||'';
+ window.RCFED={
+  cajas:[
+   [1,139,662,384,673,'nombre'],[1,488,662,572,673,'dniNum'],
+   [1,142,650,160,663,'nacDia'],[1,163,650,182,663,'nacMes'],[1,184,650,224,663,'nacAnio'],
+   [1,283,652,428,662,'rcLugarNac'],[1,466,652,572,662,d=>(d.nacionalidad||'').toUpperCase()],
+   [1,174,640,243,651,'estadoCivil'],[1,331,640,403,652,'cuit'],
+   [1,464,640,572,651,d=>({RI:'Responsable Inscripto',MT:'Monotributo',EX:'Exento'})[d.iva]||''],
+   [1,465,629,572,640,'iibb'],
+   [1,138,619,250,630,'calleSola'],[1,261,619,285,630,'numero'],[1,298,619,313,630,'piso'],[1,331,619,346,630,'depto'],
+   [1,376,619,449,630,'ciudad'],[1,461,619,485,630,'cp'],[1,500,619,572,630,'provincia'],
+   [1,109,608,134,619,d=>d.telefono?d.telCaract:''],[1,141,608,194,619,d=>d.telefono?String(d.telefono).replace(/^\s*\S+\s+/,'').replace(/\D/g,''):''],
+   [1,231,608,255,619,'telCaract'],[1,270,608,324,619,'telNum'],
+   [1,348,606,468,617,mail(0)],[1,475,606,572,617,mail(1)],
+   [1,191,592,431,604,()=>'Productor Asesor de Seguros'],
+   [1,498,339,550,352,'rcCertificados'],[1,167,309,219,323,d=>d.fedAntig?d.fedAntig+' años':''],[1,178,295,320,309,'matricula'],
+   [1,334,316,571,330,ln('rcBancos',0)],[1,334,300,571,313,ln('rcBancos',1)],
+   [1,334,276,571,289,ln('rcEstructura',0)],[1,334,261,571,275,ln('rcEstructura',1)],[1,334,246,571,259,ln('rcEstructura',2)],[1,334,230,571,243,ln('rcEstructura',3)],
+   [1,83,238,320,251,d=>d.fedZonas],
+   [1,179,192,250,205,'rcIngresos'],[1,334,189,571,202,'rcSoftware'],
+   [1,81,165,319,178,ln('fedAseg',0)],[1,81,150,319,164,ln('fedAseg',1)],[1,81,135,319,148,ln('fedAseg',2)],
+   [1,334,166,571,179,ln('rcCursos',0)],[1,334,150,571,164,ln('rcCursos',1)],[1,334,134,571,147,ln('rcCursos',2)],
+   [1,334,96,571,110,ln('rcSegPrev',0)],[1,334,81,571,94,ln('rcSegPrev',1)],
+   [2,23,801,513,814,ln('rcReclamos',0)],[2,23,785,513,798,ln('rcReclamos',1)],
+   [2,23,720,513,733,ln('rcSanciones',0)],[2,23,704,513,718,ln('rcSanciones',1)],
+   [2,112,573,212,586,'rcSuma'],
+   [2,46,84,213,95,'ciudad'],[2,378,70,513,83,'nombre'],
+   [2,45,61,64,74,'dia'],[2,70,61,89,74,'mesNum'],[2,96,61,136,74,'anio']
+  ],
+  marcas:[
+   [1,261,672,272,683,()=>true],[1,387,662,398,673,()=>true],
+   [1,109,639,120,651,d=>d.rcSexo==='Masculino'],[1,126,639,137,651,d=>d.rcSexo==='Femenino'],
+   [1,247,640,258,651,()=>true],[1,192,629,203,640,()=>true],
+   [1,539,593,550,604,d=>d.rcPep==='Si'],[1,561,593,572,604,d=>d.rcPep!=='Si'],
+   [1,181,340,192,351,()=>true],[1,160,282,171,290,()=>true],
+   [2,282,649,293,660,d=>d.rcPeriodo==='2 años'],[2,282,638,293,649,d=>d.rcPeriodo==='5 años'],[2,282,626,293,637,d=>d.rcPeriodo==='10 años'],
+   [2,93,593,104,604,d=>d.rcAapas==='Si'],[2,146,593,157,604,d=>d.rcAapas!=='Si'],
+   [2,355,573,366,584,d=>d.rcRepos==='Una'],[2,423,573,434,584,d=>d.rcRepos!=='Una']
+  ],
+  firmas:[[2,228,734,130,38]]
+ };
+})();
 </script>
 <script>// Catálogo de compañías. Cada una: documento base + cómo se completa.
 window.COMPANIAS = [
@@ -471,7 +539,10 @@ window.COMPANIAS = [
  { id:'federacion', nombre:'Federación Patronal',
    detalle:'Propuesta de admisión, DDJJ UIF y plantilla de firma · 4 páginas (+ solicitud de RC si no tenés)',
    archivo:'Alta productor Federacion Patronal', fuente:'sans',
-   cajas: FEDERACION.cajas, bloques: FEDERACION.bloques, marcas: FEDERACION.marcas, firmas: FEDERACION.firmas }
+   cajas: FEDERACION.cajas, bloques: FEDERACION.bloques, marcas: FEDERACION.marcas, firmas: FEDERACION.firmas },
+ { id:'rcfed', oculto:true, nombre:'Federación Patronal · Solicitud de RC profesional',
+   detalle:'', archivo:'Solicitud RC profesional Federacion Patronal', fuente:'sans',
+   cajas: RCFED.cajas, marcas: RCFED.marcas, firmas: RCFED.firmas }
 ];
 </script>
 <script>
@@ -549,7 +620,7 @@ window.completarPDF = async function(baseBytes, comp, datos, firmaPngBytes){
   // cajas: texto dentro de un recuadro [pagina, x0, y0, x1, y1 (coordenadas PDF), clave o función]
   for (const [p,x0,y0,x1,y1,fuente] of (comp.cajas||[])){
     const txt=String((typeof fuente==='function'?fuente(datos):datos[fuente])||'').trim(); if(!txt) continue;
-    let s=10; while(s>5.5 &&anchoTxt( fN,txt,s)>x1-x0-4) s-=0.25;
+    let s=Math.min(10,(y1-y0)*0.8); while(s>5.5 &&anchoTxt( fN,txt,s)>x1-x0-4) s-=0.25;
     pages[p-1].drawText(txt,{x:x0+2,y:y0+(y1-y0-s*0.68)/2,size:s,font:comp.fuente==='times'?fN:font,color:rgb(0,0,0)});
   }
   for (const [p,x0,y0,x1,y1,fn] of (comp.marcas||[])){
@@ -581,19 +652,19 @@ $('fecha').value=new Date().toISOString().slice(0,10);
 
 // Compañías
 const cont=$('comps');
-COMPANIAS.forEach(c=>{const l=document.createElement('label');l.className='comp';
+COMPANIAS.filter(c=>!c.oculto).forEach(c=>{const l=document.createElement('label');l.className='comp';
   l.innerHTML='<input type="checkbox" value="'+c.id+'"><div><b></b><span></span></div>';
   l.querySelector('b').textContent=c.nombre;l.querySelector('span').textContent=c.detalle;cont.appendChild(l)});
 const preElegida=new URLSearchParams(location.search).get('cia');
 if(preElegida)preElegida.split(',').forEach(id=>{const i=cont.querySelector('input[value="'+id+'"]');if(i)i.checked=true});
 const elegidas=()=>[...cont.querySelectorAll('input:checked')].map(i=>COMPANIAS.find(c=>c.id===i.value));
-function mostrarSecciones(){const ids=elegidas().map(c=>c.id);
+function mostrarSecciones(){const ids=elegidas().map(c=>c.id);if(ids.includes('federacion')&&$('fedRC').value==='No')ids.push('rcfed');
   document.querySelectorAll('[data-para]').forEach(e=>e.hidden=!e.dataset.para.split(' ').some(p=>ids.includes(p)));
   $('errcomps').style.display='none'}
-cont.addEventListener('change',mostrarSecciones);mostrarSecciones();
+cont.addEventListener('change',mostrarSecciones);$('fedRC').addEventListener('change',mostrarSecciones);mostrarSecciones();
 
 // Borrador en el propio navegador
-const CLAVES=['nombre','cuit','dni','matricula','calle','numero','piso','depto','ciudad','provincia','zona','nacionalidad','estadoCivil','fechaNac','cp','celular','telefono','email','iva','ganancias','gananciasRet','excGanancias','iibb','iibbTipo','excIibb','iibbJur','zonaSancor','tipoFactura','banco','sucursal','berkleyCia','apellido','fedAntig','fedZonas','fedAseg','fedVida','fedRC','cbu','osseg','referencias'];
+const CLAVES=['nombre','cuit','dni','matricula','calle','numero','piso','depto','ciudad','provincia','zona','nacionalidad','estadoCivil','fechaNac','cp','celular','telefono','email','iva','ganancias','gananciasRet','excGanancias','iibb','iibbTipo','excIibb','iibbJur','zonaSancor','tipoFactura','banco','sucursal','berkleyCia','apellido','fedAntig','fedZonas','fedAseg','fedVida','fedRC','rcSexo','rcLugarNac','rcPep','rcIngresos','rcSuma','rcRepos','rcPeriodo','rcAapas','rcCertificados','rcSoftware','rcBancos','rcEstructura','rcCursos','rcSegPrev','rcReclamos','rcSanciones','cbu','osseg','referencias'];
 try{const g=JSON.parse(localStorage.getItem('pas-apertura2')||'{}');CLAVES.forEach(k=>{if(g[k])$(k).value=g[k]})}catch(e){}
 function guardarBorrador(){try{const o={};CLAVES.forEach(k=>o[k]=$(k).value);localStorage.setItem('pas-apertura2',JSON.stringify(o))}catch(e){}}
 CLAVES.forEach(k=>{const el=$(k);['input','change'].forEach(ev=>el.addEventListener(ev,()=>{guardarBorrador();const f=el.closest('[data-f]');if(f)f.classList.remove('inv')}))});
@@ -657,7 +728,7 @@ function validar(){
   const dn=dig($('dni').value);marcar('dni',dn.length<7||dn.length>8);
   ['matricula','calle','numero','ciudad','provincia','fecha'].forEach(k=>marcar(k,!$(k).value.trim()));
   const visible=k=>!$(k).closest('[data-f]').closest('[hidden]');
-  ['nacionalidad','estadoCivil','fechaNac','cp','celular','iva','ganancias','gananciasRet','iibbTipo','tipoFactura','banco','apellido','fedAntig'].forEach(k=>{if(visible(k))marcar(k,!$(k).value.trim())});
+  ['nacionalidad','estadoCivil','fechaNac','cp','celular','iva','ganancias','gananciasRet','iibbTipo','tipoFactura','banco','apellido','fedAntig','rcSexo','rcLugarNac','rcIngresos','rcSuma'].forEach(k=>{if(visible(k))marcar(k,!$(k).value.trim())});
   if(visible('email'))marcar('email',!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test($('email').value.trim()));
   if(visible('cbu'))marcar('cbu',dig($('cbu').value).length!==22);
   const sinFirma=modo==='escribir'?$('textoFirma').value.trim().length<3:!trazos.length;$('errfirma').style.display=sinFirma?'block':'none';if(sinFirma)ok=false;
@@ -694,7 +765,7 @@ $('generar').onclick=async()=>{
       lugarFecha:ciudad+', '+d+'/'+m+'/'+a,cargo:'Productor Asesor de Seguros',
       nacionalidad:mayus($('nacionalidad').value),estadoCivil:$('estadoCivil').value,fechaNacTxt:fn,cp:$('cp').value.trim(),
       telefono:$('telefono').value.trim(),celular:$('celular').value.trim(),email:$('email').value.trim(),iva:$('iva').value,
-      ganancias:$('ganancias').value,gananciasRet:$('gananciasRet').value,iibbJur:$('iibbJur').value.trim(),zonaSancor:$('zonaSancor').value,tipoFactura:$('tipoFactura').value,banco:mayus($('banco').value),sucursal:mayus($('sucursal').value),berkleyCia:$('berkleyCia').value,apellido:mayus($('apellido').value),fedAntig:$('fedAntig').value.trim(),fedZonas:mayus($('fedZonas').value)||mayus($('ciudad').value),fedAseg:$('fedAseg').value,fedVida:$('fedVida').value,fedRC:$('fedRC').value,nacAnio:($('fechaNac').value||'').slice(0,4),mesNum:m,dniNum:dig($('dni').value),nacDia:($('fechaNac').value||'--').split('-')[2]||'',nacMes:($('fechaNac').value||'--').split('-')[1]||'',nacAnio2:($('fechaNac').value||'').slice(2,4),fechaCorta:d+'/'+m+'/'+a,excGanancias:$('excGanancias').value,iibb:$('iibb').value.trim(),iibbTipo:$('iibbTipo').value,
+      ganancias:$('ganancias').value,gananciasRet:$('gananciasRet').value,iibbJur:$('iibbJur').value.trim(),zonaSancor:$('zonaSancor').value,tipoFactura:$('tipoFactura').value,banco:mayus($('banco').value),sucursal:mayus($('sucursal').value),berkleyCia:$('berkleyCia').value,apellido:mayus($('apellido').value),fedAntig:$('fedAntig').value.trim(),fedZonas:mayus($('fedZonas').value)||mayus($('ciudad').value),fedAseg:$('fedAseg').value,fedVida:$('fedVida').value,fedRC:$('fedRC').value,rcSexo:$('rcSexo').value.trim(),rcLugarNac:$('rcLugarNac').value.trim(),rcPep:$('rcPep').value.trim(),rcIngresos:$('rcIngresos').value.trim(),rcSuma:$('rcSuma').value.trim(),rcRepos:$('rcRepos').value.trim(),rcPeriodo:$('rcPeriodo').value.trim(),rcAapas:$('rcAapas').value.trim(),rcCertificados:$('rcCertificados').value.trim(),rcSoftware:$('rcSoftware').value.trim(),rcBancos:$('rcBancos').value.trim(),rcEstructura:$('rcEstructura').value.trim(),rcCursos:$('rcCursos').value.trim(),rcSegPrev:$('rcSegPrev').value.trim(),rcReclamos:$('rcReclamos').value.trim(),rcSanciones:$('rcSanciones').value.trim(),nacAnio:($('fechaNac').value||'').slice(0,4),mesNum:m,dniNum:dig($('dni').value),nacDia:($('fechaNac').value||'--').split('-')[2]||'',nacMes:($('fechaNac').value||'--').split('-')[1]||'',nacAnio2:($('fechaNac').value||'').slice(2,4),fechaCorta:d+'/'+m+'/'+a,excGanancias:$('excGanancias').value,iibb:$('iibb').value.trim(),iibbTipo:$('iibbTipo').value,
       excIibb:$('excIibb').value,cbu:dig($('cbu').value),osseg:$('osseg').value.trim(),referencias:$('referencias').value.trim()};
     { const ap=(datos.apellido||'').trim(), i=ap?datos.nombre.toLowerCase().indexOf(ap.toLowerCase()):-1; datos.nombres=i>=0?(datos.nombre.slice(0,i)+datos.nombre.slice(i+ap.length)).replace(/\s+/g,' ').trim():datos.nombre; }
     { const v=new Date(+a,+m-1,+d+15); datos.vence=String(v.getDate()).padStart(2,'0')+'/'+String(v.getMonth()+1).padStart(2,'0')+'/'+v.getFullYear();
@@ -703,7 +774,8 @@ $('generar').onclick=async()=>{
     const firma=await (modo==='escribir'?firmaEscritaPNG():firmaPNG());
     const limpio=datos.nombre.replace(/[^\p{L}\p{N} ]/gu,'');
     archivos=[];
-    for(const comp of elegidas()){
+    const aGenerar=elegidas(); if(aGenerar.some(c=>c.id==='federacion')&&datos.fedRC==='No')aGenerar.push(COMPANIAS.find(c=>c.id==='rcfed'));
+    for(const comp of aGenerar){
       const bytes=await completarPDF(b64(await cargarDoc(comp.id)),comp,datos,firma);
       archivos.push({comp,file:new File([bytes],comp.archivo+' - '+limpio+'.pdf',{type:'application/pdf'})});
     }
