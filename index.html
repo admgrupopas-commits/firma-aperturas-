@@ -491,6 +491,22 @@ window.CARUSO = {
   firmas:[[2,228,734,130,38]]
  };
 })();
+
+(function(){
+ const armar=(fin,sinOtro)=>[
+  {p:1,tapar:1,sans:1,limpiar:[240,112,532,129],al:'r',x0:250,x1:528,base:125,size:11,t:'{lugar}, {dia} de {mes} de {anio}'},
+  {p:1,tapar:1,sans:1,limpiar:[84,0,532,0],al:'j1',x0:85,x1:528,base:0,size:11,t:'proponemos que la relación entre {nombre} (en adelante, el “PRODUCTOR”) y'},
+  {p:fin,tapar:1,sans:1,limpiar:[84,0,532,0],al:'l',x0:85,x1:528,base:0,size:11,t:'El PRODUCTOR: {calle}, {ciudad}, {provincia}.'},
+  {p:fin,sans:1,al:'l',x0:85,x1:400,base:sinOtro+92,size:10.5,t:'Aclaración: {nombre}'},
+  {p:fin,sans:1,al:'l',x0:85,x1:400,base:sinOtro+107,size:10.5,t:'DNI: {dni} · CUIT: {cuit}'},
+  {p:fin,sans:1,al:'l',x0:85,x1:400,base:sinOtro+122,size:10.5,t:'Matrícula SSN: {matricula}'}
+ ];
+ const ajustar=(b,y1,yP)=>{ b[1].limpiar=[84,y1-3,532,y1+14]; b[1].base=y1+10; b[2].limpiar=[84,yP-3,532,yP+14]; b[2].base=yP+10; return b; };
+ window.EXPERTA={
+  art:{ bloques: ajustar(armar(20,556),413,304), firmas:[[20,85,572,170,40]], lineas:[[20,85,615,280]] },
+  seg:{ bloques: ajustar(armar(20,518),402,298), firmas:[[20,85,534,170,40]], lineas:[[20,85,577,280]] }
+ };
+})();
 </script>
 <script>// Catálogo de compañías. Cada una: documento base + cómo se completa.
 window.COMPANIAS = [
@@ -542,7 +558,15 @@ window.COMPANIAS = [
    cajas: FEDERACION.cajas, bloques: FEDERACION.bloques, marcas: FEDERACION.marcas, firmas: FEDERACION.firmas },
  { id:'rcfed', oculto:true, nombre:'Federación Patronal · Solicitud de RC profesional',
    detalle:'', archivo:'Solicitud RC profesional Federacion Patronal', fuente:'sans',
-   cajas: RCFED.cajas, marcas: RCFED.marcas, firmas: RCFED.firmas }
+   cajas: RCFED.cajas, marcas: RCFED.marcas, firmas: RCFED.firmas },
+ { id:'expertaart', nombre:'Experta ART',
+   detalle:'Propuesta de intermediación de Experta ART · 27 páginas',
+   archivo:'Propuesta Experta ART', fuente:'sans',
+   bloques: EXPERTA.art.bloques, firmas: EXPERTA.art.firmas, lineas: EXPERTA.art.lineas },
+ { id:'expertaseg', nombre:'Experta Seguros',
+   detalle:'Propuesta de intermediación de Experta Seguros · 21 páginas',
+   archivo:'Propuesta Experta Seguros', fuente:'sans',
+   bloques: EXPERTA.seg.bloques, firmas: EXPERTA.seg.firmas, lineas: EXPERTA.seg.lineas }
 ];
 </script>
 <script>
@@ -627,6 +651,7 @@ window.completarPDF = async function(baseBytes, comp, datos, firmaPngBytes){
     if(!fn(datos)) continue; const s=10, tw=anchoTxt(font,'X',s);
     pages[p-1].drawText('X',{x:(x0+x1-tw)/2,y:(y0+y1)/2-s*0.35,size:s,font,color:rgb(0,0,0)});
   }
+  for (const [p,x0,y,x1] of (comp.lineas||[])){ const pg=pages[p-1]; pg.drawLine({start:{x:x0,y:pg.getHeight()-y},end:{x:x1,y:pg.getHeight()-y},thickness:0.7,color:rgb(0,0,0)}); }
   if (firmaPngBytes){
     const img = await doc.embedPng(firmaPngBytes);
     for (const [p,x,top,w,h] of (comp.firmas||[])){
