@@ -1,0 +1,154 @@
+<script>
+const PROVINCIAS=["Buenos Aires","Ciudad Autónoma de Buenos Aires","Catamarca","Chaco","Chubut","Córdoba","Corrientes","Entre Ríos","Formosa","Jujuy","La Pampa","La Rioja","Mendoza","Misiones","Neuquén","Río Negro","Salta","San Juan","San Luis","Santa Cruz","Santa Fe","Santiago del Estero","Tierra del Fuego","Tucumán"];
+const MESES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+const $=id=>document.getElementById(id);
+const MIN=['de','del','la','las','los','y','e','el'];
+const titulo=s=>s.trim().replace(/\s+/g,' ').toLowerCase().split(' ').map((w,i)=>(i&&MIN.includes(w))?w:w.charAt(0).toUpperCase()+w.slice(1)).join(' ');
+const mayus=s=>{s=s.trim().replace(/\s+/g,' ');return (s===s.toLowerCase()||s===s.toUpperCase())?titulo(s):s};
+PROVINCIAS.forEach(p=>{const o=document.createElement('option');o.textContent=p;$('provincia').appendChild(o)});
+$('fecha').value=new Date().toISOString().slice(0,10);
+
+// Compañías
+const cont=$('comps');
+COMPANIAS.filter(c=>!c.oculto).forEach(c=>{const l=document.createElement('label');l.className='comp';
+  l.innerHTML='<input type="checkbox" value="'+c.id+'"><div><b></b><span></span></div>';
+  l.querySelector('b').textContent=c.nombre;l.querySelector('span').textContent=c.detalle;cont.appendChild(l)});
+const preElegida=new URLSearchParams(location.search).get('cia');
+if(preElegida)preElegida.split(',').forEach(id=>{const i=cont.querySelector('input[value="'+id+'"]');if(i)i.checked=true});
+const elegidas=()=>[...cont.querySelectorAll('input:checked')].map(i=>COMPANIAS.find(c=>c.id===i.value));
+function mostrarSecciones(){const ids=elegidas().map(c=>c.id);if(ids.includes('federacion')&&$('fedRC').value==='No')ids.push('rcfed');
+  document.querySelectorAll('[data-para]').forEach(e=>e.hidden=!e.dataset.para.split(' ').some(p=>ids.includes(p)));
+  $('errcomps').style.display='none'}
+cont.addEventListener('change',mostrarSecciones);$('fedRC').addEventListener('change',mostrarSecciones);mostrarSecciones();
+
+// Borrador en el propio navegador
+const CLAVES=['nombre','cuit','dni','matricula','calle','numero','piso','depto','ciudad','provincia','zona','nacionalidad','estadoCivil','fechaNac','cp','celular','telefono','email','iva','ganancias','gananciasRet','excGanancias','iibb','iibbTipo','excIibb','iibbJur','zonaSancor','tipoFactura','banco','sucursal','berkleyCia','apellido','fedAntig','fedZonas','fedAseg','fedVida','fedRC','rcSexo','rcLugarNac','rcPep','rcIngresos','rcSuma','rcRepos','rcPeriodo','rcAapas','rcCertificados','rcSoftware','rcBancos','rcEstructura','rcCursos','rcSegPrev','rcReclamos','rcSanciones','cbu','osseg','referencias'];
+try{const g=JSON.parse(localStorage.getItem('pas-apertura2')||'{}');CLAVES.forEach(k=>{if(g[k])$(k).value=g[k]})}catch(e){}
+function guardarBorrador(){try{const o={};CLAVES.forEach(k=>o[k]=$(k).value);localStorage.setItem('pas-apertura2',JSON.stringify(o))}catch(e){}}
+CLAVES.forEach(k=>{const el=$(k);['input','change'].forEach(ev=>el.addEventListener(ev,()=>{guardarBorrador();const f=el.closest('[data-f]');if(f)f.classList.remove('inv')}))});
+// Formato CUIT y DNI
+const dig=s=>s.replace(/\D/g,'');
+$('cuit').addEventListener('blur',()=>{const d=dig($('cuit').value);if(d.length===11)$('cuit').value=d.slice(0,2)+'-'+d.slice(2,10)+'-'+d.slice(10)});
+const fmtDni=d=>d.replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+
+// Pad de firma
+const cv=$('pad'),ctx=cv.getContext('2d');let trazos=[],actual=null;
+function ajustar(){const r=cv.getBoundingClientRect(),dpr=window.devicePixelRatio||1;cv.width=r.width*dpr;cv.height=r.height*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);dibujar()}
+function dibujar(){const r=cv.getBoundingClientRect();ctx.clearRect(0,0,r.width,r.height);ctx.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue('--tinta-firma');ctx.lineWidth=2.4;ctx.lineCap='round';ctx.lineJoin='round';
+  for(const t of trazos){ctx.beginPath();t.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));if(t.length===1){ctx.lineTo(t[0][0]+.1,t[0][1]+.1)}ctx.stroke()}
+  $('padvacio').style.display=trazos.length?'none':'grid'}
+const pos=e=>{const r=cv.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top]};
+cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);actual=[pos(e)];trazos.push(actual);dibujar();$('errfirma').style.display='none'});
+cv.addEventListener('pointermove',e=>{if(!actual)return;actual.push(pos(e));dibujar()});
+['pointerup','pointercancel'].forEach(t=>cv.addEventListener(t,()=>actual=null));
+$('borrar').onclick=()=>{trazos=[];dibujar()};
+window.addEventListener('resize',ajustar);ajustar();
+
+
+let modo='escribir';
+function setModo(m){modo=m;$('mEscribir').setAttribute('aria-pressed',m==='escribir');$('mDibujar').setAttribute('aria-pressed',m==='dibujar');
+  $('zonaEscribir').hidden=m!=='escribir';$('zonaDibujar').hidden=m!=='dibujar';$('errfirma').style.display='none';if(m==='dibujar')ajustar()}
+$('mEscribir').onclick=()=>setModo('escribir');$('mDibujar').onclick=()=>setModo('dibujar');
+let textoTocado=false;
+$('textoFirma').addEventListener('input',()=>{textoTocado=true;actualizarMuestras();$('errfirma').style.display='none'});
+function actualizarMuestras(){const t=mayus($('textoFirma').value)||'Tu firma';document.querySelectorAll('.estilo span').forEach(e=>e.textContent=t)}
+$('nombre').addEventListener('input',()=>{if(!textoTocado){$('textoFirma').value=$('nombre').value;actualizarMuestras()}});
+if($('nombre').value){$('textoFirma').value=$('nombre').value;actualizarMuestras()}
+async function firmaEscritaPNG(){
+  const t=mayus($('textoFirma').value),f=document.querySelector('input[name=estilo]:checked').value;
+  await document.fonts.load('120px '+f);
+  const c=document.createElement('canvas'),g=c.getContext('2d');g.font='120px '+f;
+  const w=Math.ceil(g.measureText(t).width)+80;c.width=w;c.height=260;
+  g.font='120px '+f;g.fillStyle='#14215f';g.textBaseline='alphabetic';g.fillText(t,40,170);
+  // recortar al contorno real
+  const d=g.getImageData(0,0,c.width,c.height).data;let x0=c.width,y0=c.height,x1=0,y1=0;
+  for(let y=0;y<c.height;y++)for(let x=0;x<c.width;x++)if(d[(y*c.width+x)*4+3]>10){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}
+  const p=8,o=document.createElement('canvas');o.width=x1-x0+2*p;o.height=y1-y0+2*p;
+  o.getContext('2d').drawImage(c,x0-p,y0-p,o.width,o.height,0,0,o.width,o.height);
+  return new Promise(r=>o.toBlob(b=>b.arrayBuffer().then(a=>r(new Uint8Array(a))),'image/png'));
+}
+
+function firmaPNG(){ // recorta la firma a su contorno, en alta resolución
+  const pts=trazos.flat();if(!pts.length)return null;
+  const xs=pts.map(p=>p[0]),ys=pts.map(p=>p[1]),pad=6;
+  const x0=Math.min(...xs)-pad,y0=Math.min(...ys)-pad,w=Math.max(...xs)-x0+pad,h=Math.max(...ys)-y0+pad,S=4;
+  const c=document.createElement('canvas');c.width=Math.ceil(w*S);c.height=Math.ceil(h*S);const g=c.getContext('2d');
+  g.scale(S,S);g.translate(-x0,-y0);g.strokeStyle='#14215f';g.lineWidth=2.6;g.lineCap='round';g.lineJoin='round';
+  for(const t of trazos){g.beginPath();t.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));if(t.length===1)g.lineTo(t[0][0]+.1,t[0][1]+.1);g.stroke()}
+  return new Promise(r=>c.toBlob(b=>b.arrayBuffer().then(a=>r(new Uint8Array(a))),'image/png'));
+}
+
+function validar(){
+  let ok=true;const marcar=(k,bad)=>{$(k).closest('[data-f]').classList.toggle('inv',bad);if(bad)ok=false};
+  const comps=elegidas();if(!comps.length){$('errcomps').style.display='block';ok=false}
+  marcar('nombre',$('nombre').value.trim().length<4);
+  marcar('cuit',dig($('cuit').value).length!==11);
+  const dn=dig($('dni').value);marcar('dni',dn.length<7||dn.length>8);
+  ['matricula','calle','numero','ciudad','provincia','fecha'].forEach(k=>marcar(k,!$(k).value.trim()));
+  const visible=k=>!$(k).closest('[data-f]').closest('[hidden]');
+  ['nacionalidad','estadoCivil','fechaNac','cp','celular','iva','ganancias','gananciasRet','iibbTipo','tipoFactura','banco','apellido','fedAntig','rcSexo','rcLugarNac','rcIngresos','rcSuma'].forEach(k=>{if(visible(k))marcar(k,!$(k).value.trim())});
+  if(visible('email'))marcar('email',!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test($('email').value.trim()));
+  if(visible('cbu'))marcar('cbu',dig($('cbu').value).length!==22);
+  const sinFirma=modo==='escribir'?$('textoFirma').value.trim().length<3:!trazos.length;$('errfirma').style.display=sinFirma?'block':'none';if(sinFirma)ok=false;
+  const noAcepta=!$('acepto').checked;$('erracepto').style.display=noAcepta?'block':'none';if(noAcepta)ok=false;
+  if(!ok){const f=document.querySelector('[data-f].inv input,[data-f].inv select');const dest=!comps.length?cont:(f||$('errfirma').parentNode);
+    dest.scrollIntoView({behavior:'smooth',block:'center'});if(f&&comps.length)f.focus({preventScroll:true})}
+  return ok;
+}
+$('iva').addEventListener('change',()=>{if(!$('tipoFactura').value){const t={RI:'Factura A',MT:'Factura C',EX:'Factura C'}[$('iva').value];if(t)$('tipoFactura').value=t}});
+let apTocado=false;$('apellido').addEventListener('input',()=>apTocado=true);
+$('nombre').addEventListener('input',()=>{if(!apTocado){const w=$('nombre').value.trim().split(/\s+/);$('apellido').value=w.length>1?w[w.length-1]:''}});
+$('acepto').addEventListener('change',()=>{$('erracepto').style.display='none'});
+
+// Documentos base: incrustados o cargados a pedido (docs/<id>.js)
+window.DOCS=window.DOCS||{};
+function cargarDoc(id){
+  if(DOCS[id])return Promise.resolve(DOCS[id]);
+  return new Promise((ok,mal)=>{const s=document.createElement('script');s.src='docs/'+id+'.js';s.onload=()=>DOCS[id]?ok(DOCS[id]):mal(new Error('doc'));s.onerror=mal;document.head.appendChild(s)});
+}
+const b64=s=>{const bin=atob(s),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return u};
+
+let archivos=[];
+$('generar').onclick=async()=>{
+  if(!validar())return;
+  const b=$('generar');b.disabled=true;b.textContent='Armando los documentos…';
+  try{
+    const c=dig($('cuit').value),[a,m,d]=$('fecha').value.split('-');
+    const ciudad=mayus($('ciudad').value),calle=mayus($('calle').value),numero=$('numero').value.trim(),piso=$('piso').value.trim(),depto=$('depto').value.trim();
+    let dom=calle+' '+numero;if(piso)dom+=', piso '+piso;if(depto)dom+=(piso?' ':', depto. ')+depto;
+    const fn=$('fechaNac').value?$('fechaNac').value.split('-').reverse().join('/'):'';
+    const datos={nombre:mayus($('nombre').value),cuit:c.slice(0,2)+'-'+c.slice(2,10)+'-'+c.slice(10),dni:fmtDni(dig($('dni').value)),
+      matricula:$('matricula').value.trim(),calle:dom,calleSola:calle,numero,piso,depto,ciudad,provincia:$('provincia').value,
+      zona:mayus($('zona').value)||ciudad,lugar:ciudad,dia:String(+d),mes:MESES[+m-1],anio:a,
+      lugarFecha:ciudad+', '+d+'/'+m+'/'+a,cargo:'Productor Asesor de Seguros',
+      nacionalidad:mayus($('nacionalidad').value),estadoCivil:$('estadoCivil').value,fechaNacTxt:fn,cp:$('cp').value.trim(),
+      telefono:$('telefono').value.trim(),celular:$('celular').value.trim(),email:$('email').value.trim(),iva:$('iva').value,
+      ganancias:$('ganancias').value,gananciasRet:$('gananciasRet').value,iibbJur:$('iibbJur').value.trim(),zonaSancor:$('zonaSancor').value,tipoFactura:$('tipoFactura').value,banco:mayus($('banco').value),sucursal:mayus($('sucursal').value),berkleyCia:$('berkleyCia').value,apellido:mayus($('apellido').value),fedAntig:$('fedAntig').value.trim(),fedZonas:mayus($('fedZonas').value)||mayus($('ciudad').value),fedAseg:$('fedAseg').value,fedVida:$('fedVida').value,fedRC:$('fedRC').value,rcSexo:$('rcSexo').value.trim(),rcLugarNac:$('rcLugarNac').value.trim(),rcPep:$('rcPep').value.trim(),rcIngresos:$('rcIngresos').value.trim(),rcSuma:$('rcSuma').value.trim(),rcRepos:$('rcRepos').value.trim(),rcPeriodo:$('rcPeriodo').value.trim(),rcAapas:$('rcAapas').value.trim(),rcCertificados:$('rcCertificados').value.trim(),rcSoftware:$('rcSoftware').value.trim(),rcBancos:$('rcBancos').value.trim(),rcEstructura:$('rcEstructura').value.trim(),rcCursos:$('rcCursos').value.trim(),rcSegPrev:$('rcSegPrev').value.trim(),rcReclamos:$('rcReclamos').value.trim(),rcSanciones:$('rcSanciones').value.trim(),nacAnio:($('fechaNac').value||'').slice(0,4),mesNum:m,dniNum:dig($('dni').value),nacDia:($('fechaNac').value||'--').split('-')[2]||'',nacMes:($('fechaNac').value||'--').split('-')[1]||'',nacAnio2:($('fechaNac').value||'').slice(2,4),fechaCorta:d+'/'+m+'/'+a,excGanancias:$('excGanancias').value,iibb:$('iibb').value.trim(),iibbTipo:$('iibbTipo').value,
+      excIibb:$('excIibb').value,cbu:dig($('cbu').value),osseg:$('osseg').value.trim(),referencias:$('referencias').value.trim()};
+    { const ap=(datos.apellido||'').trim(), i=ap?datos.nombre.toLowerCase().indexOf(ap.toLowerCase()):-1; datos.nombres=i>=0?(datos.nombre.slice(0,i)+datos.nombre.slice(i+ap.length)).replace(/\s+/g,' ').trim():datos.nombre; }
+    { const v=new Date(+a,+m-1,+d+15); datos.vence=String(v.getDate()).padStart(2,'0')+'/'+String(v.getMonth()+1).padStart(2,'0')+'/'+v.getFullYear();
+      const tel=(datos.celular||datos.telefono||'').trim(), partes=tel.split(/[\s\-]+/).map(x=>x.replace(/\D/g,'')).filter(Boolean);
+      if(partes.length>1){datos.telCaract=partes[0].replace(/^0/,'');datos.telNum=partes.slice(1).join('')}else{datos.telCaract='';datos.telNum=tel.replace(/\D/g,'')} }
+    const firma=await (modo==='escribir'?firmaEscritaPNG():firmaPNG());
+    const limpio=datos.nombre.replace(/[^\p{L}\p{N} ]/gu,'');
+    archivos=[];
+    const aGenerar=elegidas(); if(aGenerar.some(c=>c.id==='federacion')&&datos.fedRC==='No')aGenerar.push(COMPANIAS.find(c=>c.id==='rcfed'));
+    for(const comp of aGenerar){
+      const bytes=await completarPDF(b64(await cargarDoc(comp.id)),comp,datos,firma);
+      archivos.push({comp,file:new File([bytes],comp.archivo+' - '+limpio+'.pdf',{type:'application/pdf'})});
+    }
+    const lista=$('bajadas');lista.innerHTML='';
+    archivos.forEach(({comp,file})=>{const r=document.createElement('div');r.className='bajada';
+      r.innerHTML='<div><b></b><span></span></div><button class="btn btn-pri" type="button" style="width:auto;padding:10px 16px;font-size:15px">Descargar</button>';
+      r.querySelector('b').textContent=comp.nombre;r.querySelector('span').textContent=file.name;
+      r.querySelector('button').onclick=()=>bajar(file);lista.appendChild(r)});
+    $('compartir').hidden=!(navigator.canShare&&navigator.canShare({files:archivos.map(x=>x.file)}));
+    $('listo').classList.add('show');$('listo').scrollIntoView({behavior:'smooth',block:'center'});
+  }catch(e){console.error(e);alert('No se pudieron armar los documentos. Revisá tu conexión y probá de nuevo.')}
+  finally{b.disabled=false;b.textContent='Generar PDF firmados'}
+};
+function bajar(file){const u=URL.createObjectURL(file),a=document.createElement('a');a.href=u;a.download=file.name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000)}
+$('compartir').onclick=async()=>{try{await navigator.share({files:archivos.map(x=>x.file),title:'Documentación de apertura'})}catch(e){}};
+</script>
+</body>
+</html>

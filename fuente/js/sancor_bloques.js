@@ -1,0 +1,33 @@
+// Párrafos que se reescriben completos (coordenadas en puntos, origen arriba-izquierda).
+// limpiar:[x0,y0,x1,y1] zona que se limpia; x0/x1 márgenes del texto; base: primera línea; lh: interlineado.
+// {clave} = dato (va en negrita); **texto** = negrita original.
+window.BLOQUES_SANCOR = [
+ {p:1,limpiar:[240,30,516,48],al:'r',x0:250,x1:510,base:42.4,size:9.5,t:'{lugar}, {dia} de {mes} de {anio}'},
+ {p:1,limpiar:[100,177,516,306],al:'j',x0:103,x1:509,base:188.8,lh:16.25,size:9.5,indent:28,
+  t:'Quien suscribe {nombre}, CUIT {cuit}, con domicilio en calle {calle}, de la ciudad de {ciudad}, Provincia de {provincia}, en su carácter de Productor Asesor de Seguros conforme acredito con matrícula vigente nº {matricula} otorgada por la SSN, vengo por el presente a efectuar a Uds. un ofrecimiento para intermediar en las ramas de seguro que LA COOPERATIVA comercializa, quedando sujeto este ofrecimiento a las disposiciones de la ley 17.418, a las normas contenidas en la ley 22.400 y/o las que en lo sucesivo las modifiquen y/o reemplacen y a las siguientes condiciones:'},
+ {p:5,limpiar:[128,107,516,272.8],al:'j',x0:131.5,x1:502,base:119.1,lh:10.85,size:9.5,
+  t:'En la ciudad de Sunchales, provincia de Santa Fe, a los {dia} días del mes de {mes} de {anio}, entre Sancor Cooperativa de Seguros Ltda. con domicilio en Ruta Nac. N° 34 km 257 de Sunchales provincia de Santa Fe, representada en este acto por el Sr. Osiris Tomás Trossero DNI 20.803.509 en su carácter de Director Adjunto de la Dirección Clientes y Distribución por una parte, en adelante **“Sancor Seguros”**; y por la otra el Sr. {nombre}, DNI {dni}, en su carácter de Productor Asesor de Seguros, matrícula N° {matricula}, con domicilio en {calle}, de la ciudad de {ciudad}, provincia de {provincia}, en adelante el **“Productor-Asesor”**, sin perjuicio de los contratos y acuerdos existentes entre ambas partes, los que se mantienen plenamente vigentes en todas sus cláusulas y no se verán afectados en tanto y en cuanto no contradigan las cláusulas del presente, suscriben este convenio de cobranza y rendición de cuentas dentro del marco de las resoluciones 429/2000, 90/2001 y 407/2001 del Ministerio de Economía de la Nación y 28268 del 26-6-2001 de Superintendencia de Seguros de la Nación que establecen y reglamentan los requisitos de los convenios de cobranzas celebrados a tal efecto, sujetos a las siguientes cláusulas:'},
+ {p:6,limpiar:[128,564,330,590],al:'l',x0:132,x1:330,base:574.4,lh:10.9,size:9.5,lineas:['Productor-Asesor: {nombre}','Matrícula número: {matricula}']},
+ {p:7,limpiar:[190,64,572,86],al:'r',x0:200,x1:560,base:78,size:12,t:'{lugar}, {dia} de {mes} de {anio}'},
+ {p:7,limpiar:[44,247,569,394],al:'j',x0:47.5,x1:564,base:263,lh:20.9,size:12,indent:36.5,
+  t:'Quien suscribe {nombre}, CUIT {cuit}, con domicilio en calle {calle}, de la ciudad de {ciudad}, Provincia de {provincia}, en su carácter de Productor Asesor de Seguros conforme acredito con matrícula vigente nº {matricula} otorgada por la SSN, vengo por el presente a efectuar a Uds. un ofrecimiento para intermediar en las ramas de seguro que LA ASEGURADORA comercializa, quedando sujeto este ofrecimiento a las disposiciones de la ley 17.418, a las normas contenidas en la ley 22.400 y/o las que en lo sucesivo las modifiquen y/o reemplacen y a las siguientes condiciones:'},
+ {p:12,limpiar:[280,119,500,135],al:'r',x0:290,x1:490,base:130,size:9.4,t:'{lugar}, {dia} de {mes} de {anio}'},
+ {p:12,limpiar:[140,164,510,213],al:'j',x0:143,x1:504,base:177,lh:10.7,size:9.4,
+  t:'Quien suscribe {nombre}, CUIT {cuit}, con domicilio en calle {calle}, de la ciudad de {ciudad}, Provincia de {provincia}, propone el siguiente porcentaje comisionario sobre las operaciones en que intermediare: ______ %'},
+ {p:13,limpiar:[200,62,512,82],al:'r',x0:210,x1:505,base:77,size:11.3,t:'{lugar}, {dia} de {mes} de {anio}'},
+ {p:13,limpiar:[203,547,362,561],al:'l',x0:205,x1:360,base:558,size:11.3,t:'{nombre}'},
+ {p:13,limpiar:[237,573,362,587],al:'l',x0:239,x1:360,base:584,size:11.3,t:'{nombre}'},
+ {p:13,limpiar:[216,599,362,613],al:'l',x0:218,x1:360,base:610,size:11.3,t:'{dni}'},
+ {p:13,limpiar:[212,624.5,362,638.5],al:'l',x0:217,x1:360,base:636,size:11.3,t:'{cargo}'},
+ {p:14,limpiar:[104,157.5,510,196.5],al:'j',x0:106,x1:504,base:168.2,lh:12.95,size:11.3,
+  t:'**II.-** {nombre}, CUIT N° {cuit}, con domicilio en la calle {calle}, de la ciudad de {ciudad}, provincia de {provincia}, en adelante denominado el “Agente”.'},
+ {p:14,limpiar:[110.2,324,237.4,339],al:'l',x0:112,x1:236,base:335,size:11.3,t:'{zona}'},
+ {p:24,limpiar:[215,40,572,60],al:'r',x0:225,x1:560,base:53,size:12,t:'{lugar}, {dia} de {mes} de {anio}'},
+ {p:24,limpiar:[44,222,569,394],al:'j',x0:48,x1:563,base:238,lh:20.9,size:12,indent:36,
+  t:'Quien suscribe {nombre}, CUIT {cuit}, con domicilio en calle {calle}, de la ciudad de {ciudad}, Provincia de {provincia}, en mi carácter de Productor Asesor de Seguros conforme acredito con matrícula vigente nº {matricula} otorgada por la SSN, vengo por el presente a efectuar a Uds. un ofrecimiento para intermediar en la rama de seguro que PREVENCIÓN RETIRO S.A. comercializa, quedando sujeto este ofrecimiento a las disposiciones de la ley 17.418, a las normas contenidas en la ley 22.400 y/o las que en lo sucesivo las modifiquen y/o reemplacen y a las siguientes condiciones:'},
+ {p:29,limpiar:[125,180,410,195],al:'l',x0:150,x1:405,base:190,size:9,t:'{nombre} (Nombre y Apellido / Denominación)'},
+ {p:29,limpiar:[461,196,565,209],al:'l',x0:463,x1:565,base:204,size:9,t:'{zona}'},
+ {p:30,limpiar:[100,96,440,110],al:'l',x0:106,x1:210,base:106,size:10,t:'{cuit}'},
+ {p:30,limpiar:[210,96,440,110],al:'l',x0:218,x1:440,base:106,size:10,t:'{nombre}'},
+ {p:30,limpiar:[559,96,610,110],al:'l',x0:560,x1:610,base:106,size:9,t:'{zona}'},
+];

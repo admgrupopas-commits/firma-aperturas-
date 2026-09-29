@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Grupo PAS · Apertura de código Sancor y Prevención</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --papel:#f6f7f4; --hoja:#ffffff; --tinta:#1b2a4a; --suave:#5b6679; --linea:#d9dde3;
+  --verde:#1f6b52; --verde-osc:#16513e; --error:#b3261e; --tinta-firma:#14215f;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--papel);color:var(--tinta);
+  font-family:"Public Sans",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:16px;line-height:1.5}
+.wrap{max-width:680px;margin:0 auto;padding:28px 18px 60px}
+header{margin-bottom:26px}
+.marca{font-weight:700;font-size:14px;color:var(--verde);letter-spacing:.02em}
+h1{font-size:clamp(26px,5vw,34px);line-height:1.15;margin:6px 0 10px;font-weight:700}
+.intro{color:var(--suave);margin:0}
+.docs{margin:14px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px}
+.docs li{font-size:13px;background:#e8eee9;color:var(--verde-osc);padding:3px 10px;border-radius:20px}
+section{background:var(--hoja);border:1px solid var(--linea);border-radius:10px;padding:22px 20px;margin-bottom:18px}
+section h2{font-size:19px;margin:0 0 4px;display:flex;gap:10px;align-items:baseline}
+section h2 .n{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--tinta);color:#fff;font-size:14px;flex:none;transform:translateY(-2px)}
+.ayuda{color:var(--suave);font-size:14px;margin:0 0 16px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 14px}
+.full{grid-column:1/-1}
+label{display:block;font-size:14px;font-weight:600;margin-bottom:5px}
+label small{font-weight:400;color:var(--suave)}
+input,select{width:100%;font:inherit;color:var(--tinta);padding:11px 12px;border:1px solid #c5ccd6;border-radius:7px;background:#fff}
+input:focus,select:focus,button:focus-visible{outline:3px solid #9cc8b8;outline-offset:1px;border-color:var(--verde)}
+.err{color:var(--error);font-size:13px;min-height:0;margin-top:3px;display:none}
+.inv input,.inv select{border-color:var(--error)}
+.inv .err{display:block}
+.pad-box{position:relative;border:1px solid #c5ccd6;border-radius:8px;background:#fff;
+  background-image:linear-gradient(to top, transparent 34px, var(--linea) 34px, var(--linea) 35px, transparent 35px)}
+canvas{display:block;width:100%;height:190px;touch-action:none;cursor:crosshair;border-radius:8px}
+.pad-vacio{position:absolute;inset:0;display:grid;place-items:center;color:#9aa3b2;pointer-events:none;font-size:15px}
+.fila{display:flex;justify-content:space-between;align-items:center;margin-top:8px;gap:10px;flex-wrap:wrap}
+.btn{font:inherit;font-weight:600;border-radius:8px;padding:12px 18px;border:1px solid transparent;cursor:pointer}
+.btn-sec{background:#fff;border-color:#c5ccd6;color:var(--tinta);padding:8px 14px;font-size:14px}
+.btn-pri{background:var(--verde);color:#fff;width:100%;font-size:17px;padding:15px}
+.btn-pri:hover{background:var(--verde-osc)}
+.btn-pri:disabled{opacity:.6;cursor:wait}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px;margin:4px 0 16px}
+.check input{width:20px;height:20px;flex:none;margin-top:2px}
+.listo{display:none;border-color:var(--verde);background:#f1f8f4}
+.listo.show{display:block}
+.listo h2{color:var(--verde-osc)}
+.acciones{display:grid;gap:10px;margin-top:12px}
+.pie{font-size:13px;color:var(--suave);text-align:center;margin-top:24px}
+@media (max-width:520px){.grid{grid-template-columns:1fr}.wrap{padding-top:20px}}
+@media (prefers-reduced-motion:no-preference){.listo.show{animation:ap .35s ease-out}@keyframes ap{from{opacity:0;transform:translateY(6px)}}}
+@font-face{font-family:'F1';src:url(data:font/woff2;base64,/*F1*/) format('woff2')}
+@font-face{font-family:'F2';src:url(data:font/woff2;base64,/*F2*/) format('woff2')}
+@font-face{font-family:'F3';src:url(data:font/woff2;base64,/*F3*/) format('woff2')}
+.modos{display:flex;gap:6px;margin-bottom:12px;background:#eef1f4;padding:4px;border-radius:9px;width:fit-content}
+.modos button{font:inherit;font-size:14px;font-weight:600;border:0;background:transparent;color:var(--suave);padding:7px 14px;border-radius:6px;cursor:pointer}
+.modos button[aria-pressed="true"]{background:#fff;color:var(--tinta);box-shadow:0 1px 2px rgba(20,30,60,.12)}
+.estilos{display:grid;gap:8px;margin-top:12px}
+.estilo{display:flex;align-items:center;gap:12px;border:1px solid #c5ccd6;border-radius:8px;padding:6px 14px;cursor:pointer;background:#fff;min-height:64px}
+.estilo input{width:18px;height:18px;flex:none;margin:0}
+.estilo span{font-size:34px;color:var(--tinta-firma);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.estilo:has(input:checked){border-color:var(--verde);background:#f1f8f4}
+[hidden]{display:none!important}
+
+.comps{display:grid;gap:10px}
+.comp{display:flex;gap:14px;align-items:flex-start;border:1.5px solid #c5ccd6;border-radius:10px;padding:14px 16px;cursor:pointer;background:#fff}
+.comp input{width:22px;height:22px;flex:none;margin:2px 0 0;accent-color:var(--verde)}
+.comp b{display:block;font-size:17px}
+.comp span{display:block;font-size:14px;color:var(--suave);font-weight:400}
+.comp:has(input:checked){border-color:var(--verde);background:#f1f8f4}
+.sub{font-size:15px;font-weight:700;margin:22px 0 4px;padding-top:16px;border-top:1px solid var(--linea)}
+.bajadas{display:grid;gap:10px;margin-top:12px}
+.bajada{display:flex;justify-content:space-between;align-items:center;gap:12px;border:1px solid #c5ccd6;border-radius:8px;padding:10px 12px;background:#fff}
+.bajada div{font-size:14px;line-height:1.35}.bajada div b{display:block;font-size:15px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="marca">Grupo PAS</div>
+  <h1>Apertura de códigos</h1>
+  <p class="intro">Elegís las compañías, completás tus datos y firmás una sola vez. Te llevás un PDF por compañía, listo para mandar.</p>
+</header>
+
+<section>
+  <h2><span class="n">1</span>Compañías</h2>
+  <p class="ayuda">Marcá todas en las que quieras abrir código.</p>
+  <div class="comps" id="comps"></div>
+  <div class="err" id="errcomps">Elegí al menos una compañía.</div>
+</section>
+
+<section>
+  <h2><span class="n">2</span>Tus datos</h2>
+  <p class="ayuda">Tal como figuran en tu matrícula de la SSN.</p>
+  <div class="grid">
+    <div class="full" data-f="nombre"><label for="nombre">Nombre y apellido</label><input id="nombre" autocomplete="name"><div class="err">Ingresá tu nombre y apellido.</div></div>
+    <div data-f="cuit"><label for="cuit">CUIT</label><input id="cuit" inputmode="numeric" placeholder="20-12345678-9"><div class="err">El CUIT tiene 11 números.</div></div>
+    <div data-f="dni"><label for="dni">DNI</label><input id="dni" inputmode="numeric" placeholder="12345678"><div class="err">Ingresá un DNI válido.</div></div>
+    <div data-f="matricula"><label for="matricula">Matrícula SSN</label><input id="matricula" inputmode="numeric"><div class="err">Ingresá tu número de matrícula.</div></div>
+    <div data-f="calle"><label for="calle">Calle</label><input id="calle" autocomplete="address-line1" placeholder="Av. Colón"><div class="err">Ingresá la calle.</div></div>
+    <div data-f="numero"><label for="numero">Número</label><input id="numero" inputmode="numeric"><div class="err">Ingresá el número.</div></div>
+    <div data-f="piso"><label for="piso">Piso y depto. <small>(opcional)</small></label>
+      <div style="display:flex;gap:8px"><input id="piso" placeholder="Piso"><input id="depto" placeholder="Depto."></div></div>
+    <div data-f="ciudad"><label for="ciudad">Ciudad</label><input id="ciudad" autocomplete="address-level2"><div class="err">Ingresá la ciudad.</div></div>
+    <div data-f="provincia"><label for="provincia">Provincia</label><select id="provincia"><option value="">Elegí una</option></select><div class="err">Elegí la provincia.</div></div>
+    <div data-f="zona" data-para="sancor"><label for="zona">Zona o región de trabajo <small>(opcional)</small></label><input id="zona" placeholder="Si lo dejás vacío, va la ciudad"></div>
+    <div data-f="fecha"><label for="fecha">Fecha de firma</label><input id="fecha" type="date"><div class="err">Elegí la fecha.</div></div>
+  </div>
+
+  <div data-para="atm sancor rivadavia zurich caruso berkley federacion" id="extra">
+    <div class="sub">Datos adicionales que piden las compañías elegidas</div>
+    <div class="grid">
+      <div data-f="nacionalidad" data-para="atm berkley federacion"><label for="nacionalidad">Nacionalidad</label><input id="nacionalidad" value="Argentina"><div class="err">Completá la nacionalidad.</div></div>
+      <div data-f="estadoCivil" data-para="atm sancor rivadavia berkley federacion"><label for="estadoCivil">Estado civil</label><select id="estadoCivil"><option value="">Elegí uno</option><option>Soltero/a</option><option>Casado/a</option><option>Divorciado/a</option><option>Viudo/a</option><option>Unión convivencial</option></select><div class="err">Elegí el estado civil.</div></div>
+      <div data-f="fechaNac" data-para="atm sancor rivadavia berkley federacion"><label for="fechaNac">Fecha de nacimiento</label><input id="fechaNac" type="date"><div class="err">Completá la fecha de nacimiento.</div></div>
+      <div data-f="cp" data-para="atm sancor rivadavia caruso berkley federacion"><label for="cp">Código postal</label><input id="cp" autocomplete="postal-code"><div class="err">Completá el código postal.</div></div>
+      <div data-f="celular" data-para="atm sancor rivadavia zurich caruso berkley federacion"><label for="celular">Celular</label><input id="celular" type="tel" autocomplete="tel"><div class="err">Completá el celular.</div></div>
+      <div data-f="telefono" data-para="atm sancor rivadavia berkley federacion"><label for="telefono">Teléfono fijo <small>(opcional)</small></label><input id="telefono" type="tel"></div>
+      <div class="full" data-f="email" data-para="atm sancor rivadavia zurich caruso berkley federacion"><label for="email">Email</label><input id="email" type="email" autocomplete="email"><div class="err">Ingresá un email válido.</div></div>
+      <div data-f="iva" data-para="atm sancor caruso berkley federacion"><label for="iva">Condición frente al IVA</label><select id="iva"><option value="">Elegí una</option><option value="RI">Responsable inscripto</option><option value="MT">Monotributo</option><option value="EX">Exento</option></select><div class="err">Elegí la condición.</div></div>
+      <div data-f="ganancias" data-para="sancor berkley"><label for="ganancias">Impuesto a las Ganancias</label><select id="ganancias"><option value="">Elegí una</option><option>Inscripto</option><option>Exento</option><option>No inscripto</option></select><div class="err">Elegí una opción.</div></div>
+      <div data-f="gananciasRet" data-para="atm"><label for="gananciasRet">Retención de Ganancias (ATM)</label><select id="gananciasRet"><option value="">Elegí una</option><option>Honorarios</option><option>Servicios</option><option>Monotributo</option></select><div class="err">Elegí una opción.</div></div>
+      <div data-f="excGanancias" data-para="atm"><label for="excGanancias">¿Exceptuado de retención de Ganancias?</label><select id="excGanancias"><option>No</option><option>Si</option></select></div>
+      <div data-f="iibbTipo" data-para="atm sancor caruso berkley federacion"><label for="iibbTipo">Ingresos Brutos</label><select id="iibbTipo"><option value="">Elegí uno</option><option>Local</option><option>Convenio Multilateral</option><option>Exento</option><option>No inscripto</option></select><div class="err">Elegí una opción.</div></div>
+      <div data-f="iibb" data-para="atm sancor rivadavia federacion"><label for="iibb">N.º de Ingresos Brutos <small>(si tenés)</small></label><input id="iibb"></div>
+      <div data-f="iibbJur" data-para="sancor"><label for="iibbJur">Jurisdicción sede <small>(solo Convenio Multilateral)</small></label><input id="iibbJur"></div>
+      <div data-f="excIibb" data-para="atm"><label for="excIibb">¿Exceptuado de retención de IIBB?</label><select id="excIibb"><option>No</option><option>Si</option></select></div>
+      <div class="full" data-f="cbu" data-para="atm rivadavia caruso berkley"><label for="cbu">CBU para el pago de comisiones</label><input id="cbu" inputmode="numeric"><div class="err">El CBU tiene 22 números.</div></div>
+      <div data-f="tipoFactura" data-para="rivadavia"><label for="tipoFactura">Tipo de factura electrónica</label><select id="tipoFactura"><option value="">Elegí una</option><option>Factura A</option><option>Factura B</option><option>Factura C</option></select><div class="err">Elegí el tipo de factura.</div></div>
+      <div data-f="banco" data-para="berkley"><label for="banco">Banco de la cuenta</label><input id="banco"><div class="err">Completá el banco.</div></div>
+      <div data-f="sucursal" data-para="berkley"><label for="sucursal">Sucursal <small>(opcional)</small></label><input id="sucursal"></div>
+      <div data-f="berkleyCia" data-para="berkley"><label for="berkleyCia">Berkley: ¿en qué compañía te incorporás?</label><select id="berkleyCia"><option>BIS</option><option>BIS ART</option><option>Ambas</option></select></div>
+      <div data-f="osseg" data-para="atm caruso federacion"><label for="osseg">N.º de afiliado OSSEG <small>(opcional)</small></label><input id="osseg"></div>
+      <div data-f="referencias" data-para="atm"><label for="referencias">Referencias comerciales <small>(opcional)</small></label><input id="referencias"></div>
+      <div data-f="zonaSancor" data-para="sancor"><label for="zonaSancor">Zona comercial Sancor</label><select id="zonaSancor"><option>CÓRDOBA</option><option>BAHÍA BLANCA</option><option>CAPITAL FEDERAL</option><option>CASA CENTRAL</option><option>CONCORDIA</option><option>GENERAL ROCA</option><option>MAR DEL PLATA</option><option>MENDOZA</option><option>POSADAS</option><option>RESISTENCIA</option><option>RÍO CUARTO</option><option>ROSARIO</option><option>SANTA FE</option><option>SANTA ROSA</option><option>TUCUMÁN</option></select></div>
+    </div>
+  </div>
+
+  <div data-para="federacion">
+    <div class="sub">Datos que pide Federación Patronal</div>
+    <div class="grid">
+      <div data-f="apellido"><label for="apellido">Apellido/s</label><input id="apellido" placeholder="Se completa solo desde tu nombre"><div class="err">Completá el apellido.</div></div>
+      <div data-f="fedAntig"><label for="fedAntig">Años de antigüedad en la profesión</label><input id="fedAntig" inputmode="numeric"><div class="err">Completá la antigüedad.</div></div>
+      <div class="full" data-f="fedZonas"><label for="fedZonas">Zonas en las que actuás principalmente</label><input id="fedZonas" placeholder="Si lo dejás vacío, va tu ciudad"></div>
+      <div class="full" data-f="fedAseg"><label for="fedAseg">Aseguradoras con las que trabajás actualmente <small>(una por renglón, hasta 4)</small></label><textarea id="fedAseg" rows="4" style="width:100%;font:inherit;padding:11px 12px;border:1px solid #c5ccd6;border-radius:7px"></textarea></div>
+      <div data-f="fedVida"><label for="fedVida">¿Comercializás seguros de Vida con Ahorro y/o Retiro?</label><select id="fedVida"><option>No</option><option>Si</option></select></div>
+      <div data-f="fedRC"><label for="fedRC">¿Tenés seguro de Responsabilidad Civil profesional con otra compañía?</label><select id="fedRC"><option>Si</option><option>No</option></select></div>
+    </div>
+  </div>
+
+  <div data-para="rcfed">
+    <div class="sub">Solicitud de RC profesional (Federación Patronal)</div>
+    <p class="ayuda" style="margin-top:0">Como no tenés seguro de RC con otra compañía, se suma la solicitud de Federación.</p>
+    <div class="grid">
+      <div data-f="rcSexo"><label for="rcSexo">Sexo</label><select id="rcSexo"><option value="">Elegí uno</option><option>Femenino</option><option>Masculino</option></select><div class="err">Elegí una opción.</div></div>
+      <div data-f="rcLugarNac"><label for="rcLugarNac">Lugar de nacimiento</label><input id="rcLugarNac"><div class="err">Completá el lugar de nacimiento.</div></div>
+      <div data-f="rcPep"><label for="rcPep">¿Sos persona expuesta políticamente?</label><select id="rcPep"><option>No</option><option>Si</option></select></div>
+      <div data-f="rcIngresos"><label for="rcIngresos">Monto de tus ingresos anuales</label><input id="rcIngresos" placeholder="$"><div class="err">Completá el monto.</div></div>
+      <div data-f="rcSuma"><label for="rcSuma">Suma asegurada solicitada</label><input id="rcSuma" placeholder="$"><div class="err">Completá la suma asegurada.</div></div>
+      <div data-f="rcRepos"><label for="rcRepos">Reposiciones de suma asegurada</label><select id="rcRepos"><option>Sin reposición</option><option>Una</option></select></div>
+      <div data-f="rcPeriodo"><label for="rcPeriodo">Período extendido de denuncias</label><select id="rcPeriodo"><option>2 años</option><option>5 años</option><option>10 años</option></select></div>
+      <div data-f="rcAapas"><label for="rcAapas">¿Sos socio de AAPAS?</label><select id="rcAapas"><option>No</option><option>Si</option></select></div>
+      <div data-f="rcCertificados"><label for="rcCertificados">Cantidad total de certificados vigentes <small>(opcional)</small></label><input id="rcCertificados" inputmode="numeric"></div>
+      <div data-f="rcSoftware"><label for="rcSoftware">Software de seguros que usás <small>(opcional)</small></label><input id="rcSoftware"></div>
+      <div class="full" data-f="rcBancos"><label for="rcBancos">Bancos con los que operás <small>(uno por renglón)</small></label><textarea id="rcBancos" rows="2" style="width:100%;font:inherit;padding:11px 12px;border:1px solid #c5ccd6;border-radius:7px"></textarea></div>
+      <div class="full" data-f="rcEstructura"><label for="rcEstructura">Estructura de tu organización <small>(opcional)</small></label><textarea id="rcEstructura" rows="2" style="width:100%;font:inherit;padding:11px 12px;border:1px solid #c5ccd6;border-radius:7px"></textarea></div>
+      <div class="full" data-f="rcCursos"><label for="rcCursos">Cursos de capacitación del último año <small>(opcional)</small></label><textarea id="rcCursos" rows="2" style="width:100%;font:inherit;padding:11px 12px;border:1px solid #c5ccd6;border-radius:7px"></textarea></div>
+      <div class="full" data-f="rcSegPrev"><label for="rcSegPrev">Seguros de RC profesional que tuviste antes <small>(compañía, póliza, vigencia)</small></label><textarea id="rcSegPrev" rows="2" style="width:100%;font:inherit;padding:11px 12px;border:1px solid #c5ccd6;border-radius:7px"></textarea></div>
+      <div class="full" data-f="rcReclamos"><label for="rcReclamos">Reclamos por RC en tu ejercicio profesional</label><textarea id="rcReclamos" rows="2" style="width:100%;font:inherit;padding:11px 12px;border:1px solid #c5ccd6;border-radius:7px">No registra</textarea></div>
+      <div class="full" data-f="rcSanciones"><label for="rcSanciones">Sanciones de la SSN</label><textarea id="rcSanciones" rows="2" style="width:100%;font:inherit;padding:11px 12px;border:1px solid #c5ccd6;border-radius:7px">No registra</textarea></div>
+    </div>
+  </div>
+</section>
+<section>
+  <h2><span class="n">3</span>Tu firma</h2>
+  <p class="ayuda">Se va a estampar en todos los lugares donde corresponde.</p>
+  <div class="modos" role="group" aria-label="Cómo querés firmar">
+    <button type="button" id="mEscribir" aria-pressed="true">Escribirla</button>
+    <button type="button" id="mDibujar" aria-pressed="false">Dibujarla</button>
+  </div>
+  <div id="zonaEscribir">
+    <label for="textoFirma">Tu nombre como firma</label>
+    <input id="textoFirma" placeholder="Se completa con tu nombre">
+    <div class="estilos" role="radiogroup" aria-label="Estilo de letra">
+      <label class="estilo"><input type="radio" name="estilo" value="F1" checked><span style="font-family:F1">Tu firma</span></label>
+      <label class="estilo"><input type="radio" name="estilo" value="F2"><span style="font-family:F2">Tu firma</span></label>
+      <label class="estilo"><input type="radio" name="estilo" value="F3"><span style="font-family:F3">Tu firma</span></label>
+    </div>
+  </div>
+  <div id="zonaDibujar" hidden>
+    <p class="ayuda" style="margin-bottom:10px">Firmá con el dedo o el mouse sobre la línea.</p>
+    <div class="pad-box" id="padbox"><canvas id="pad"></canvas><div class="pad-vacio" id="padvacio">Firmá acá</div></div>
+    <div class="fila"><span></span><button class="btn btn-sec" id="borrar" type="button">Borrar firma</button></div>
+  </div>
+  <div class="err" id="errfirma" style="display:none">Falta la firma.</div>
+</section>
+
+<section>
+  <h2><span class="n">4</span>Generar los documentos</h2>
+  <label class="check" data-f="acepto"><input type="checkbox" id="acepto"><span>Leí la documentación y confirmo que mis datos son correctos. Acepto firmarla en forma electrónica.</span></label>
+  <div class="err" id="erracepto" style="margin-top:-10px;margin-bottom:12px">Tenés que confirmar para seguir.</div>
+  <button class="btn btn-pri" id="generar" type="button">Generar PDF firmados</button>
+</section>
+
+<section class="listo" id="listo" aria-live="polite">
+  <h2>Documentos listos</h2>
+  <p class="ayuda" style="margin:0">Descargalos y mandalos a Grupo PAS por mail o WhatsApp.</p>
+  <div class="bajadas" id="bajadas"></div>
+  <div class="acciones"><button class="btn btn-sec" id="compartir" type="button" hidden>Enviar todos desde el celular</button></div>
+</section>
+
+<p class="pie">Tus datos no se guardan en ningún servidor: los documentos se arman en tu propio dispositivo.</p>
+</div>
+<script>/*PDFLIB*/</script>
+<script>/*CONFIG*/</script>
+<script>/*SANCOR*/</script>
+<script>/*COMPANIAS*/</script>
+<script>/*MOTOR*/</script>
+<script>/*DOCS*/</script>
